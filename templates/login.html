@@ -1,0 +1,36 @@
+{% extends "layout.html" %}
+{% block title %}Frogo | Login{% endblock %}
+{% block body_class %}login_body{% endblock %}
+{% block main_wrap_class %}login{% endblock %}
+{% block hero %}
+        <h2>Login</h2>
+        <form action="/login/process" method="POST">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="messages">
+                        {% for category, message in messages%}
+                            {% if category == "username_error" %}
+                                <p class="{{category}}">{{message}}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <p><input type="text" name="username" id="username" placeholder="Username"></p>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="messages">
+                        {% for category, message in messages%}
+                            {% if category == "password_error" %}
+                                <p class="{{category}}">{{message}}</p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <p><input type="password" name="password" id="password" placeholder="Password"></p>
+            <input type="submit" class="login_button" value="Login">
+            <p><small>Don't have an account?</small></p>
+            <button type="button" class="register_button" onclick="document.location='/register'">Register</button>
+        </form>
+{% endblock %}

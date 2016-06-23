@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+</head>
+<body class="body {% block body_class %}{% endblock %} {% if session['user_level'] < 20 and session['user_level'] %}admin_logged_in{% endif %}">
+    {% if session['user_level'] < 20 and session['user_level'] %}
+    <div class="admin_header">
+        <div class="admin_header_wrap">
+            <h2>Admin</h2> <a class="header_link" href="/users/">Edit Users</a>
+            <a href="/admin/messages/">Admin Inbox</a>
+        </div>
+    </div>
+    {% endif %}
+    <header>
+        <div class="header_wrap">
+            <h1><a href="/"><img class="logo" src="{{url_for('static',filename='vector_fish_logo.png')}}"> Frogo</a> {% if session['user_logged_in'] %} <a class="header_link" href="/posts/">Posts</a> <a class="header_link" href="/posts/new/">Add Post</a>{% endif %}</h1><!--
+         --><div class="login_register">
+                {% if not session['user_logged_in'] %}
+                    <div><a href="/login">Login</a></div>
+                    <div><a class="register_home_button" href="/register">Sign Up</a></div>
+                {% else %}
+                    <p><a class="user_image" href="/user/{{ session['user_id'] }}" style="background-image: url({{ session['user_image'] }});"></a><a href="/user/{{ session['user_id'] }}">{{ session['username'] }}</a></p>
+                    <div><a href="/logout">Logout</a></div>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+    <div class="main_wrap {% block main_wrap_class %}{% endblock %}">
+        <div class="content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="messages">
+                        {% for category, message in messages %}
+                            <p class="{{category}}">{{message}}</p>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+            <div class="hero {% block hero_class %}{% endblock %}">
+                {% block hero %}{% endblock %}
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='jquery.js') }}"></script>
+    <script src="{{ url_for('static', filename='scripts.js') }}"></script>
+</body>
+</html>

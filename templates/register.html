@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+{% block title %}Frogo | Register{% endblock %}
+{% block body_class %}register_body{% endblock %}
+{% block main_wrap_class %}register{% endblock %}
+{% block hero %}
+        <h2>Register</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="messages">
+                    {% for category, message in messages%}
+                        <p class="{{category}}">{{message}}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <form action="/register/process" method="POST">
+            <p><input type="text" name="email" id="email" placeholder="Email"></p>
+            <p><input type="text" name="username" id="username" placeholder="Username"></p>
+            <p><input type="password" name="password" id="password" placeholder="Password"></p>
+            <p><input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm password"></p>
+            <input type="submit" class="register_button" value="Register">
+            <p><small>Already have an account?</small></p>
+            <button type="button" class="login_button" onclick="document.location='/login'">Login</button>
+        </form>
+{% endblock %}

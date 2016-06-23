@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+{% block title %}Frogo | Posts{% endblock %}
+{% block body_class %}posts{% endblock %}
+{% block hero %}
+    <div class="add_post">
+        <div class="username">
+            Posting as: {{ session['username'] }}
+        </div>
+        <div class="hero">
+            <form action="/posts/add" class="post_form" method="POST">
+                <div><textarea name="post_content" placeholder="Speak your mind"></textarea></div><!--
+             --><div class="align_right bottom_row"><input type="submit" value="Post"></div>
+            </form>
+        </div>
+    </div>
+    <h2>Recent Posts:</h2>
+    <div class="posts">
+        {% for post in posts %}
+            <div class="post" id="post_id_{{ post['post_id'] }}">
+                <div class="user_box">
+                    <div class="user_image">
+                        <a href="/user/{{ post['user_user_id'] }}" class="user_image_link" style="background-image: url({{post['user_image']}});"></a>
+                        <p class="username">
+                            <a href="/user/{{ post['user_user_id'] }}">{{ post['username'] }}</a>
+                        </p>
+                    </div>
+                </div>
+                <div class="post_content">
+                    <p>{{ post['post_content'] }}</p>
+                    <span class="posted_date" title="{{ post['posted_date_readable'] }}">
+                        {{ post['posted_date'] }}
+                    </span>
+                    {% if session['user_logged_in'] and post['post_user_id'] == session['user_id'] or session['user_level'] < 20 %}
+                        <div class="actions">
+                            <a href="/post/{{ post['post_id'] }}/delete/" onclick="return confirm('Are you sure?');">Delete</a>
+                            <a href="/post/{{ post['post_id'] }}/edit/">Edit</a>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="comments_container">
+                    {% if post['post_comments'] %}
+                        <div class="comments">
+                            {% for comment in post['post_comments'] %}
+                                <div class="comment">
+                                    <div class="user_box">
+                                        <div class="user_image">
+                                            <a href="/user/{{ comment['user_id'] }}" class="comment_user_image" style="background-image: url({{ comment['user_image'] }});"></a>
+                                        </div>
+                                        <div class="username">
+                                            <a href="/user/{{ comment['user_id'] }}">{{ comment['username']}}</a>
+                                        </div>
+                                    </div>
+                                    <p>{{comment['comment_content']}} <span class="commented_on" title="{{ comment['created_at_readable'] }}">{{ comment['created_at'] }}</span></p>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if session['user_logged_in'] %}
+                    <div class="input_row">
+                        <div class="username">
+                            Posting as: <a href="/user/{{session['user_id']}}">{{ session['username'] }}</a>
+                        </div>
+                        <form method="POST" action="/post/{{post['post_id']}}/comment/new">
+                            <input type="text" name="comment_content" placeholder="Enter a comment"><!--
+                         --><button type="submit"><i class="fa fa-paper-plane send_arrow" aria-hidden="true"></i></button>
+                        </form>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

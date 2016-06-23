@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block title %}Frogo | Add Post{% endblock %}
+{% block body_class %}add_post{% endblock %}
+{% block hero %}
+    <div class="username">
+        Posting as: {{ session['username'] }}
+    </div>
+    <div class="hero">
+        <form action="/posts/add" class="post_form" method="POST">
+            <div><textarea name="post_content" placeholder="Speak your mind"></textarea></div><!--
+         --><div class="align_right bottom_row"><input type="submit" value="Post"></div>
+        </form>
+    </div>
+{% endblock %}

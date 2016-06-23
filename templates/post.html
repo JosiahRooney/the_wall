@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% block title %}Frogo | Post{% endblock %}
+{% block body_class %}single_post{% endblock %}
+{% block hero %}
+    <p><a href="/users/{{ post_author[0]['user_id'] }}">{{ post_author[0]['username'] }}</a></p>
+    <div class="this_post">
+        {% if this_post %}
+            <div class="post">
+                {{ this_post[0]['post_content'] }}
+            </div>
+        {% endif %}
+    </div>
+    {% if post_comments %}
+        <div class="comments">
+            {% for comment in post_comments %}
+                <div class="comment">
+                    {{ comment['username'] }} {{ comment['comment_content'] }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <div class="input_row">
+        <form method="POST" action="/post/{{this_post[0]['post_id']}}/comment/new">
+            <input type="text" name="comment_content" placeholder="Enter a comment"><!--
+         --><button type="submit"><i class="fa fa-paper-plane send_arrow" aria-hidden="true"></i></button>
+        </form>
+    </div>
+{% endblock %}

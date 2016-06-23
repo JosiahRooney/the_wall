@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}Frogo | Home{% endblock %}
+{% block hero %}
+    <h1>What's New</h1>
+    <!-- posts here -->
+    <div class="recent_posts">
+        <div class="post">
+            <p>Sportsball Teams Tied for Victory - 6 hours ago</p>
+            <img src="{{url_for('static',filename='2.jpg')}}">
+        </div><!--
+     --><div class="post">
+            <p>Call of Duty Expected to Disappoint - 1 hour ago</p>
+            <img src="{{url_for('static',filename='3.jpg')}}">
+        </div><!--
+     --><div class="post">
+            <p>Experts: Cycling Causes Cancer - 3 hours ago</p>
+            <img src="{{url_for('static',filename='1.jpg')}}">
+        </div>
+    </div>
+    <div class="friend_finder">
+        <h2>Find a Friend</h2>
+        <form action="/search/friend" method="POST">
+            <input type="text" name="friend_search" placeholder="friend's name/email"><button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+        </form>
+    </div>
+{% endblock %}
